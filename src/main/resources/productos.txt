@@ -1,0 +1,5 @@
+001;iPhone 12;móvil de Apple muy bueno y caro.
+002;Sherwood rx4508; receiver modelo clásico, buen equipo de audio a un precio accesible.
+003;Fonos PHillips; modelo lx 23s, fonos blue tooth de buena calidad y resistentes.
+004;Smart TV Sony; modelo zx 269t, pantalla MOLED 50".
+005;monitor DELL hx27;monitor 27", HDMI, SVGA, HD-4K.
