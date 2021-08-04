@@ -4,7 +4,7 @@ import modelo.Producto;
 import modelo.Venta;
 
 public class DatosVenta {
-    private final String path = "ventas.txt";
+    private final String path = "src/main/resources/ventas.txt";
     private final Venta venta;
 
     public DatosVenta(Venta venta){
@@ -12,8 +12,8 @@ public class DatosVenta {
 
     }
 
-    private void saveVenta(){
-
+    public void saveVenta(){
+        new GestorArchivos().editar(path, getDatos());
     }
     private String getDatos(){
         String datos = getId();
@@ -26,7 +26,7 @@ public class DatosVenta {
     }
 
     private String getId(){
-        String id = "";
+        String id = "0";
         String[] ventas = new GestorArchivos().verArchivo(path).split("\n");
 
         if(ventas.length == 0){

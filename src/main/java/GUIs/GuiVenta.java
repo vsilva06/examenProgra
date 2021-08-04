@@ -1,9 +1,16 @@
 package GUIs;
 
+import Datos.DatosVenta;
+import Datos.GestorArchivos;
+import modelo.Carrito;
+import modelo.Producto;
+import modelo.Venta;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class GuiVenta extends JFrame implements ActionListener {
     private JComboBox codigoProducto;
@@ -13,6 +20,8 @@ public class GuiVenta extends JFrame implements ActionListener {
     private JButton finalizarVentaButton;
     private JButton salirButton;
     private JPanel venta;
+    private Carrito carrito;
+    private ArrayList<Producto> productosCargados = new ArrayList<Producto>();
 
     public GuiVenta() {
         this.setTitle("Venta");
@@ -23,6 +32,8 @@ public class GuiVenta extends JFrame implements ActionListener {
         pack();
         setVisible(true);
 
+        carrito = new Carrito();
+        cargarProductos();
         iniciarComponentes();
 
     }
@@ -32,16 +43,54 @@ public class GuiVenta extends JFrame implements ActionListener {
         agregarAlCarroButton.addActionListener(this);
         finalizarVentaButton.addActionListener(this);
         salirButton.addActionListener(this);
+        for (Producto producto : this.productosCargados) {
+            codigoProducto.addItem(producto.getCodigo());
+
+        }
+
 
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
         if (e.getSource() == salirButton) {
             System.exit(0);
         }
+        if (e.getSource() == finalizarVentaButton) {
+            new DatosVenta(new Venta(carrito)).saveVenta();
+        }
+        if (e.getSource() == agregarAlCarroButton) {
+            carrito.addProducto(getProducto(codigoProducto.getSelectedItem().toString()));
 
+        }
+        if (e.getSource() == codigoProducto) {
+            nombreProducto.setText(getProducto(codigoProducto.getSelectedItem().toString()).getNombre());
+            detalleProducto.setText(getProducto(codigoProducto.getSelectedItem().toString()).getDescripcion());
+
+
+        }
+
+
+    }
+
+    private void cargarProductos() {
+        String archivoProductos = new GestorArchivos().verArchivo("src/main/resources/productos.txt");
+        String[] productosArchivo = archivoProductos.split("\n");
+
+        for (String productoArchivo : productosArchivo) {
+            String[] productoActual = productoArchivo.split(";");
+
+            this.productosCargados.add(new Producto(productoActual[0], productoActual[1], productoActual[2]));
+        }
+    }
+
+    private Producto getProducto(String codigo) {
+        for (Producto producto : this.productosCargados) {
+            if (producto.getCodigo().equals(codigo)) {
+                return producto;
+            }
+        }
+        return null;
     }
 
     {
